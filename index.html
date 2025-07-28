@@ -1,0 +1,83 @@
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
+import { IoSend } from "react-icons/io5";
+import { FaMicrophone } from "react-icons/fa";
+
+export default function AIChatUI() {
+  const [message, setMessage] = useState("");
+  const [chatLog, setChatLog] = useState([]);
+
+  const handleSend = () => {
+    if (!message.trim()) return;
+    setChatLog([...chatLog, { user: true, text: message }]);
+    setMessage("");
+    // TODO: Integrate AI chatbot API here
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-white to-green-100 flex items-center justify-center p-4" style={{ backgroundImage: 'url(https://upload.wikimedia.org/wikipedia/en/4/41/Flag_of_India.svg)', backgroundSize: 'cover', backgroundBlendMode: 'overlay' }}>
+      <div className="grid md:grid-cols-2 gap-8 max-w-6xl w-full bg-white/90 rounded-2xl shadow-2xl p-4">
+        {/* Chatbot Column */}
+        <Card className="rounded-2xl bg-gradient-to-br from-white to-blue-50">
+          <CardContent className="p-6 space-y-4 h-[500px] overflow-y-auto">
+            <h2 className="text-2xl font-bold text-blue-700">AI Chat Assistant</h2>
+            <div className="space-y-2">
+              {chatLog.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`p-3 rounded-xl max-w-sm ${msg.user ? 'bg-blue-500 text-white self-end ml-auto' : 'bg-gray-200 text-black self-start mr-auto'}`}
+                >
+                  {msg.text}
+                </div>
+              ))}
+            </div>
+          </CardContent>
+          <div className="p-4 flex gap-2 items-center">
+            <Input
+              placeholder="Type your message..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="flex-1"
+            />
+            <Button onClick={handleSend} className="bg-blue-600 text-white">
+              <IoSend />
+            </Button>
+            <Button variant="outline" className="border-blue-600 text-blue-600">
+              <FaMicrophone />
+            </Button>
+          </div>
+        </Card>
+
+        {/* Login/Signup Column */}
+        <Card className="rounded-2xl bg-gradient-to-tr from-blue-100 to-white">
+          <CardContent className="p-6 space-y-6">
+            <h2 className="text-2xl font-bold text-blue-800">Welcome</h2>
+            <Input placeholder="Email" type="email" className="w-full" />
+            <Input placeholder="Password" type="password" className="w-full" />
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Login</Button>
+
+            <div className="flex items-center justify-between text-sm text-gray-600">
+              <span>Don't have an account?</span>
+              <Button variant="link" className="text-blue-600 p-0">Sign Up</Button>
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <Button variant="outline" className="flex items-center justify-center gap-2">
+                <FcGoogle /> Sign up with Google
+              </Button>
+              <Button variant="outline" className="flex items-center justify-center gap-2">
+                <FaFacebook className="text-blue-600" /> Sign up with Facebook
+              </Button>
+            </div>
+
+            <Button variant="ghost" className="text-sm text-gray-600 mt-4">Need Help? Support</Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
